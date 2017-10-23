@@ -1,0 +1,315 @@
+%% $Id: xltabular-doc.tex 598 2017-09-30 19:52:25Z herbert $
+%
+\listfiles
+\documentclass[paper=a4,fontsize=11pt,DIV=13,parskip=half-,
+               captions=tableabove,twoside=on]{scrartcl}
+\usepackage{fontspec}
+%\usepackage[%usefilenames,
+%            TT={Scale=0.88,FakeStretch=0.9},
+%            SS={Scale=0.9},
+%            RM={Scale=0.9},
+%            DefaultFeatures={Ligatures=TeX}]{lucida-otf}  % support opentype math fonts
+\setmainfont{AccanthisADFStdNo3}[
+  UprightFont   =*-Regular,
+  BoldFont      =*-Bold,
+  ItalicFont    =*-Italic,
+  BoldItalicFont=*-BoldItalic,
+  RawFeature    = -rlig,
+]
+\setsansfont{GilliusADF}[
+  UprightFont   =*-Regular,
+  BoldFont      =*-Bold,
+  ItalicFont    =*-Italic,
+  BoldItalicFont=*-BoldItalic,
+  RawFeature    = -rlig,
+]
+\setmonofont{Anonymous Pro}[Scale=MatchLowercase,FakeStretch=0.9]
+
+\usepackage[english]{babel}
+\usepackage{scrlayer-scrpage}
+\automark[section]{section}
+\automark*[subsection]{}
+\pagestyle{scrheadings}
+
+%\usepackage{selnolig}
+%\nolig{oe}{o|e}
+
+\usepackage{xltabular}
+\makeatletter
+\let\XLVersion\xltabular@version
+\makeatother
+
+\usepackage{fancyvrb}
+\usepackage{blindtext}
+\usepackage{dtk-logos} % for Wikipedia W
+\usepackage{ragged2e}
+
+\usepackage[bibstyle=dtk]{biblatex}
+\addbibresource{\jobname.bib}
+
+\raggedbottom
+
+\usepackage[colorlinks,linktocpage]{hyperref}
+\newcommand*\cs[1]{\texttt{\textbackslash#1}}
+\title{Package \texttt{xltabular} \\--\\ v.~\XLVersion}
+\author{Rolf Niepraschk\thanks{Rolf.Niepraschk@gmx.de} \and Herbert Voß\thanks{hvoss@tug.org}}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+The package \texttt{ltablex} supports an environment \texttt{tabularx} with 
+the possiblity of pagebreaks and the same header/footer definitions as in
+the package \texttt{longtable}. But the old bevaviour of the \texttt{tabularx}
+environment is no more possible.
+
+The package \texttt{xltabular} defines an environment of the same name
+which behaves like a \texttt{tabularx} as a \texttt{longtable}. In short:
+it is a \texttt{longtable} with the column specifier \texttt{X}. But it leaves the 
+\texttt{tabularx} environment with its original behaviour. 
+
+The syntax of the environment is similiar to the one of \texttt{tabularx}:
+
+\begin{verbatim}
+\begin{xltabular}[hPos]{width}{ l X ...}
+\caption{...\label{...}}\\
+tabular body
+\end{xltabular}
+\end{verbatim}
+
+For the optional argument \texttt{hPos} (horizontal position) the values \texttt{l}, 
+\texttt{r} and \texttt{c} (default)
+are possible. The environment \texttt{xltabular} uses \texttt{longtable} for
+typesetting the tabular. The original \texttt{longtable} increases the counter
+\texttt{table} in any case, with or without a caption. This is not the case
+with \texttt{xltabular}: no \cs{caption}, no counter change.
+
+
+
+
+\section{Examples}
+
+\newcommand\B{Some nonsense text which fills at least one line
+	of a tabular called nonsense tabular with text.\\}
+\newcommand\BB{\B\B\B\B\B\B\B\B\B\B\B\B\B\B\B}
+\newcommand\BBB{\BB\BB\BB\BB}
+
+\listoftables
+
+\markboth{Examples}{}
+\vspace{1cm}
+
+
+\subsection{The standard \texttt{tabularx} environment}
+
+\begin{Verbatim}[frame=lines]
+\captionaboveof{table}{Using the original \texttt{tabularx} environment: 
+   a pagebreak not possible! This is the reason why the tabular moves 
+   to the next page.}
+\begin{tabularx}{0.75\linewidth}{@{} lX @{}}
+left column & \blindtext\\
+l           & \blindtext\\
+left column & \blindtext\\
+l           & \blindtext\\
+\end{tabularx}
+\end{Verbatim}
+
+\captionaboveof{table}{Using the original \texttt{tabularx} environment: 
+	a pagebreak not possible! This is the reason why the tabular moves 
+	to the next page.}
+\begin{tabularx}{0.75\linewidth}{@{} lX @{}}
+	left column & \blindtext\\
+	l           & \blindtext\\
+	left column & \blindtext\\
+	l           & \blindtext\\
+\end{tabularx}
+
+
+%\begin{tabularx}{\linewidth}{@{}X@{}}
+%\captionaboveof{table}{Another example for the original \texttt{tabularx} environment: 
+%%%pagebreak not possible!}\\
+%\BBB
+%\end{tabularx}
+
+\clearpage
+
+\subsection{The new environment \texttt{xltabular}}
+For the demonstration we use a tabular with only one X column. There is no difference
+to an example with more or other column specifiers.
+
+\begin{Verbatim}[frame=lines]
+\begin{xltabular}{\linewidth}{@{} X @{}}
+\caption{the \texttt{xltabular} environment with \texttt{longtable} 
+         property}\\[\belowcaptionskip]
+\BB\\
+Now a manuel \cs{pagebreak} is used and on the
+following page an automatic pagebreak is done by \texttt{longtable}.\\
+
+\pagebreak
+
+\BBB
+\end{xltabular}
+\end{Verbatim}
+
+\begin{xltabular}{\linewidth}{@{} X @{}}
+\caption{the \texttt{xltabular} environment with \texttt{longtable} 
+	property}\\[\belowcaptionskip]
+\BB\\
+Now a manuel \cs{pagebreak} is used and on the
+following page an automatik pagebreak is done by \texttt{longtable}.\\
+
+\pagebreak
+
+\BBB
+\end{xltabular}
+
+The command \cs{BBB}  does nothing else then printing a lot of lines
+with nonsense.
+
+
+\setcapwidth{0.75\linewidth}
+
+\begin{Verbatim}[frame=lines]
+\begin{xltabular}[l]{0.75\linewidth}{@{} lX @{}}
+\caption{The \texttt{xltabular} environment with \texttt{longtable} property 
+         and left aligned by setting the optional argument.}\\[\belowcaptionskip]\hline
+Left column & At first a line with some nonsense text to show how long this line is. 
+              The caption has the same width as the text.\\
+left column & \blindtext\\
+left column & \blindtext\\
+left column & \blindtext\\
+left column & \blindtext\\\hline
+\end{xltabular}
+\end{Verbatim}
+
+
+
+\begin{xltabular}[l]{0.75\linewidth}{@{} lX @{}}
+	\caption{The \texttt{xltabular} environment with \texttt{longtable} property 
+		and left aligned by setting the optional argument.}\\[\belowcaptionskip]\hline
+	Left column & At first a line with some nonsense text to show how long this line is. 
+	The caption has the same width as the text.\\
+	left column & \blindtext\\
+	left column & \blindtext\\
+	left column & \blindtext\\
+	left column & \blindtext\\\hline
+\end{xltabular}
+
+
+
+
+\subsection{\texttt{tabularx} without a caption}
+
+Here comes another \texttt{tabularx} but without a caption. It should
+\emph{not} increase the \texttt{table} counter. The following tabular
+in the last section should have the correct number!
+
+\begin{tabularx}{\linewidth}{@{} >{\ttfamily}l>{\RaggedRight}X @{}}\hline
+.ext & Beschreibung\\\hline
+ aux & (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl & (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib & (bibtex) enthält die Literaturdaten\\ 
+ blg & (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg & (config) Konfigurationsdatei\\ 
+ clo & (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+         Klassen-Optionen\\ 
+\end{tabularx}
+
+
+\subsection{\texttt{xltabular} with the star version of caption}
+
+Here comes another \texttt{xltabular} with \cs{caption*}. It should
+\emph{not} increase the \texttt{table} counter. The following tabular
+in the next section should have the correct number!
+
+\begin{xltabular}{\linewidth}{@{} >{\ttfamily}l>{\RaggedRight}X @{}}
+\caption*{A caption as star version: no number no entry in the List of Tables}\\\hline
+.ext & Beschreibung\\\hline
+ aux & (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl & (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib & (bibtex) enthält die Literaturdaten\\ 
+ blg & (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg & (config) Konfigurationsdatei\\ 
+ clo & (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+         Klassen-Optionen\\ 
+\end{xltabular}
+
+
+
+\subsection{\texttt{xltabular} with header/footer definitions}
+
+\begin{Verbatim}[frame=lines]
+\begin{xltabular}{\linewidth}{@{} >{\ttfamily}l >{\RaggedRight}X @{}}
+\caption{File endings (only for a demonstration \ldots)}\\\hline
+.ext & Beschreibung\\\hline
+\endfirsthead
+\multicolumn{2}{@{}l}{\ldots\ \small Fortsetzung}\\\hline
+.ext & Beschreibung\\\hline
+\endhead
+\hline
+\multicolumn{2}{r@{}}{\small Fortsetzung\ldots}\\
+\endfoot
+\hline
+\endlastfoot
+aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+bib &  (bibtex) enthält die Literaturdaten\\ 
+blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+cfg &  (config) Konfigurationsdatei\\ 
+clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+[...]
+Klassen-Optionen\\ 
+\end{xltabular}
+\end{Verbatim}
+
+\begin{xltabular}{\linewidth}{@{} >{\ttfamily}l >{\RaggedRight}X @{}}
+\caption{File endings (only for a demonstration \ldots)}\\\hline
+.ext & Beschreibung\\\hline
+\endfirsthead
+\multicolumn{2}{@{}l}{\ldots\ \small Fortsetzung}\\\hline
+.ext & Beschreibung\\\hline
+\endhead
+\hline
+\multicolumn{2}{r@{}}{\small Fortsetzung\ldots}\\
+\endfoot
+\hline
+\endlastfoot
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+\end{xltabular}
+
+
+
+\nocite{*}
+\printbibliography
+
+
+\end{document}
+

@@ -1,0 +1,4 @@
+0.03  2017-10-01  - fix for \caption* in longtable
+0.02  2017-09-28  - added optional argument for horizontal alignment
+                  - extended documentation
+0.01  2017-09-27  - first CTAN version
