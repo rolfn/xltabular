@@ -7,9 +7,7 @@
 % Copyright 2017 Herbert Voss <hvoss@tug.org>
 %                Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\def\xltabular@version{0.03 }
-\ProvidesPackage{xltabular}
-          [2017/10/01 v\xltabular@version `xltabular' package (hv,rn)]
+\ProvidesPackage{xltabular}[2017/10/23 v0.04 `xltabular' package (hv,RN)]
 
 \RequirePackage{tabularx}
 \let\ORIGi@tabularx=\tabularx
@@ -42,13 +40,16 @@
    \let\endtabularx\endxltabular
    \ORIGii@tabularx}
   {\def\@currenvir{tabularx}}
-%
-% In "longtable" increase the counter "table" only if "\caption" is used 
 
+% In "longtable" increase the counter "table" only if "\caption" is used 
 \def\LT@c@ption#1{%
   \noalign{%
     \ifx#1\@firstofone
-      \refstepcounter{table}%
+      % We use the following instead of "\refstepcounter"
+      \stepcounter{table}%
+      % We are inside a group: edef -> xdef
+      \protected@xdef\@currentlabel
+        {\csname p@table\endcsname\csname thetable\endcsname}%
     \fi}%
   \ORIG@LT@c@ption{#1}%
 } 
