@@ -1,6 +1,6 @@
 %% $Id: xltabular-doc.tex 598 2017-09-30 19:52:25Z herbert $
 %
-\listfiles
+\listfiles\setcounter{errorcontextlines}{100}
 \documentclass[paper=a4,fontsize=11pt,DIV=13,parskip=half-,
                captions=tableabove,twoside=on]{scrartcl}
 \usepackage{fontspec}
@@ -35,10 +35,6 @@
 %\nolig{oe}{o|e}
 
 \usepackage{xltabular}
-\makeatletter
-\let\XLVersion\xltabular@version
-\makeatother
-
 \usepackage{fancyvrb}
 \usepackage{blindtext}
 \usepackage{dtk-logos} % for Wikipedia W

@@ -24,7 +24,7 @@ $(MAIN)-doc.bcf : $(MAIN)-doc.tex $(BIBS)
 $(MAIN)-doc.bbl : $(MAIN)-doc.bcf
 	$(BIBER) -V $<
 
-$(MAIN)-doc[XXX].pdf : $(MAIN)-doc.tex $(MAIN).sty $(MAIN)-doc.bib $(MAIN)-doc.bbl 
+$(MAIN)-doc.pdf : $(MAIN)-doc.tex $(MAIN).sty $(MAIN)-doc.bib $(MAIN)-doc.bbl 
 	$(LATEX) $<
 	$(BIBER) $<
 	$(LATEX) $<
