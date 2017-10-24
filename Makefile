@@ -29,7 +29,7 @@ $(MAIN)-doc.pdf : $(MAIN)-doc.tex $(MAIN).sty $(MAIN)-doc.bib $(MAIN)-doc.bbl
 	$(LATEX) $<
 
 dist : $(DIST_FILES)
-	rm -f $(DIST_DIR) $(ARCHNAME)
+	rm -rf $(DIST_DIR) $(ARCHNAME)
 	mkdir -p $(DIST_DIR)
 	cp -p $+ $(DIST_DIR)
 	zip $(ARCHNAME) -r $(DIST_DIR)
