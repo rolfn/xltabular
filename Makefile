@@ -23,11 +23,9 @@ $(MAIN)-doc.bcf : $(MAIN)-doc.tex $(BIBS)
 
 $(MAIN)-doc.bbl : $(MAIN)-doc.bcf
 	$(BIBER) -V $<
+	$(LATEX) $(basename $<).tex
 
 $(MAIN)-doc.pdf : $(MAIN)-doc.tex $(MAIN).sty $(MAIN)-doc.bib $(MAIN)-doc.bbl 
-	$(LATEX) $<
-	$(BIBER) $*
-	$(LATEX) $<
 	$(LATEX) $<
 
 dist : $(DIST_FILES)
@@ -39,10 +37,9 @@ dist : $(DIST_FILES)
 
 clean :
 	$(RM) *.aux *.log *.glg *.glo *.gls *.idx *.ilg *.ind *.toc
-	$(RM) *.tmp *.out *.blg *.bbl *.bcf *.run.xml *.lot
 
 veryclean : clean
-	$(RM) $(MAIN).pdf $(MAIN).sty $(ARCHNAME)
+	$(RM) $(MAIN).pdf $(ARCHNAME)
 
 debug :
 	@echo $(ARCHNAME)
