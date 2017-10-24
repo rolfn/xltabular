@@ -39,6 +39,7 @@ dist : $(DIST_FILES)
 
 clean :
 	$(RM) *.aux *.log *.glg *.glo *.gls *.idx *.ilg *.ind *.toc
+	$(RM) *.tmp *.out *.blg *.bbl *.bcf *.run.xml *.lot
 
 veryclean : clean
 	$(RM) $(MAIN).pdf $(MAIN).sty $(ARCHNAME)

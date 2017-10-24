@@ -124,6 +124,7 @@ l           & \blindtext\\
 \end{tabularx}
 \end{Verbatim}
 
+\bigskip
 \captionaboveof{table}{Using the original \texttt{tabularx} environment: 
 	a pagebreak not possible! This is the reason why the tabular moves 
 	to the next page.}
@@ -145,7 +146,8 @@ l           & \blindtext\\
 
 \subsection{The new environment \texttt{xltabular}}
 For the demonstration we use a tabular with only one X column. There is no difference
-to an example with more or other column specifiers.
+to an example with more or other column specifiers. However, there should be at least
+one \texttt{X} column specifier; it makes no real sense otherwise.
 
 \begin{Verbatim}[frame=lines]
 \begin{xltabular}{\linewidth}{@{} X @{}}
@@ -222,7 +224,7 @@ in the last section should have the correct number!
  blg & (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
  cfg & (config) Konfigurationsdatei\\ 
  clo & (class options) Definitionen für die Dokumentenklasse und die entsprechenden
-         Klassen-Optionen\\ 
+         Klassen-Optionen\\\hline 
 \end{tabularx}
 
 
@@ -241,7 +243,7 @@ in the next section should have the correct number!
  blg & (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
  cfg & (config) Konfigurationsdatei\\ 
  clo & (class options) Definitionen für die Dokumentenklasse und die entsprechenden
-         Klassen-Optionen\\ 
+         Klassen-Optionen\\\hline 
 \end{xltabular}
 
 
