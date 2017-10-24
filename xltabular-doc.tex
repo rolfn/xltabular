@@ -44,10 +44,23 @@
 \addbibresource{\jobname.bib}
 
 \raggedbottom
-
 \usepackage[colorlinks,linktocpage]{hyperref}
 \newcommand*\cs[1]{\texttt{\textbackslash#1}}
-\title{Package \texttt{xltabular} \\--\\ v.~\XLVersion}
+
+\makeatletter% from: doc.sty
+\newcommand*\GetFileInfo[1]{%
+  \def\filename{#1}%
+  \def\@tempb##1 ##2 ##3\relax##4\relax{%
+    \def\filedate{##1}%
+    \def\fileversion{##2}%
+    \def\fileinfo{##3}}%
+  \edef\@tempa{\csname ver@#1\endcsname}%
+  \expandafter\@tempb\@tempa\relax? ? \relax\relax}
+\makeatother
+
+\GetFileInfo{xltabular.sty}
+
+\title{Package \texttt{xltabular} \\--\\ \fileversion (\filedate)}
 \author{Rolf Niepraschk\thanks{Rolf.Niepraschk@gmx.de} \and Herbert Voß\thanks{hvoss@tug.org}}
 \begin{document}
 \maketitle
