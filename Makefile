@@ -1,10 +1,10 @@
-# Rolf Niepraschk, 2014-10-23, Rolf.Niepraschk@gmx.de
+# Rolf Niepraschk, 2014-10-24, Rolf.Niepraschk@gmx.de
 
 .SUFFIXES : .tex .ltx .dvi .ps .pdf .eps
 
 MAIN = xltabular
 
-LATEX = xelatex
+LATEX = lualatex
 TEX = tex
 BIBER = biber
 
@@ -26,10 +26,10 @@ $(MAIN)-doc.bbl : $(MAIN)-doc.bcf
 
 $(MAIN)-doc.pdf : $(MAIN)-doc.tex $(MAIN).sty $(MAIN)-doc.bib $(MAIN)-doc.bbl 
 	$(LATEX) $<
-	$(BIBER) $<
+	$(BIBER) $*
 	$(LATEX) $<
 	$(LATEX) $<
-	
+
 dist : $(DIST_FILES)
 	rm -f $(DIST_DIR) $(ARCHNAME)
 	mkdir -p $(DIST_DIR)
