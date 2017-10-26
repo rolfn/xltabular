@@ -1,4 +1,4 @@
-%% $Id: xltabular.sty 602 2017-10-01 13:47:08Z herbert $
+%% $Id: xltabular.sty 635 2017-10-24 18:22:59Z herbert $
 %%
 %% This file is distributed under the terms of the LaTeX Project Public
 %% License from CTAN archives in directory  macros/latex/base/lppl.txt.
@@ -7,13 +7,14 @@
 % Copyright 2017 Herbert Voss <hvoss@tug.org>
 %                Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2017/10/24 v0.04 `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2017/10/26 v0.05 `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \let\ORIGi@tabularx=\tabularx
 \let\ORIGi@endtabularx=\endtabularx
 \let\ORIGi@TX@endtabularx=\TX@endtabularx
 %
 \RequirePackage{ltablex}
+\keepXColumns
 \let\ORIGii@tabularx=\tabularx
 \let\ORIGii@TX@endtabularx=\TX@endtabularx
 %
@@ -39,6 +40,7 @@
  \ORIGii@tabularx}
 {\def\@currenvir{tabularx}}
 
+\iffalse
 % In "longtable" increase the counter "table" only if "\caption" is used 
 \AtBeginDocument{%
   \let\ORIG@LT@capti@n=\LT@capti@n
@@ -53,6 +55,7 @@
     }%
   }%
 } 
+\fi
 %
 \providecommand*\LTcaptype{table}% support of package "caption"
 \def\longtable{%
