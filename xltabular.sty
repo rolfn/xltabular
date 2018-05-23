@@ -1,13 +1,12 @@
-%% $Id: xltabular.sty 635 2017-10-24 18:22:59Z herbert $
 %%
 %% This file is distributed under the terms of the LaTeX Project Public
 %% License from CTAN archives in directory  macros/latex/base/lppl.txt.
 %% Either version 1.3 or, at your option, any later version.
 %%
-% Copyright 2017 Herbert Voss <hvoss@tug.org>
+% Copyright 2018 Herbert Voss <hvoss@tug.org>
 %                Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2017/10/26 v0.05 `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2018/05/23 v0.1a `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \let\ORIGi@tabularx=\tabularx
 \let\ORIGi@endtabularx=\endtabularx
@@ -22,9 +21,9 @@
 \let\ORIG@longtable=\longtable
 %
 % restore original tabularx
-\let\tabularx=\ORIGi@tabularx
-\let\endtabularx=\ORIGi@endtabularx
-\let\TX@endtabularx=\ORIGi@TX@endtabularx
+\renewenvironment{tabularx}%
+{\let\TX@endtabularx=\ORIGi@TX@endtabularx\ORIGi@tabularx}
+{\ORIGi@endtabularx}
 %
 % define a new tabularx like the one from "ltablex" 
 %
