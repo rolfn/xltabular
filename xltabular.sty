@@ -6,28 +6,35 @@
 % Copyright 2018 Herbert Voss <hvoss@tug.org>
 %                Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2018/05/23 v0.1a `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2018/12/16 v0.2a `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
-\let\ORIGi@tabularx=\tabularx
-\let\ORIGi@endtabularx=\endtabularx
-\let\ORIGi@TX@endtabularx=\TX@endtabularx
+\let\XLT@i@tabularx=\tabularx
+\let\XLT@i@endtabularx=\endtabularx
+\let\XLT@i@TX@endtabularx=\TX@endtabularx
 %
 \RequirePackage{ltablex}
 \keepXColumns% xltabular behaves like tabularx
 %
-\let\ORIGii@tabularx=\tabularx
-\let\ORIGii@TX@endtabularx=\TX@endtabularx
-%
-\let\ORIG@longtable=\longtable
+\let\XLT@ii@tabularx=\tabularx
+\let\XLT@ii@TX@endtabularx=\TX@endtabularx
+\let\XLT@longtable=\longtable
+\let\XLT@LT@start=\LT@start
+\let\XLT@LT@array=\LT@array
+\@ifundefined{scr@LT@array}{%
+  \AtBeginDocument{%
+    \@ifundefined{adl@LT@array}{}{\let\XLT@adl@LT@array=\adl@LT@array}
+  }
+}{\let\XLT@scr@LT@array=\scr@LT@array}%
+
 %
 % restore original tabularx
 \renewenvironment{tabularx}%
-{\let\TX@endtabularx=\ORIGi@TX@endtabularx\ORIGi@tabularx}
-{\ORIGi@endtabularx}
+{\let\TX@endtabularx=\XLT@i@TX@endtabularx\XLT@i@tabularx}
+{\XLT@i@endtabularx}
 %
 % define a new tabularx like the one from "ltablex" 
 %
-\newenvironment{xltabular}[1][x]
+\newenvironment{xltabular}[1][x]%
 {\if l#1%
     \LTleft\z@ \LTright\fill
  \else\if r#1%
@@ -35,31 +42,72 @@
  \else\if c#1%
     \LTleft\fill \LTright\fill
  \fi\fi\fi
- \let\TX@endtabularx=\ORIGii@TX@endtabularx
+ \let\TX@endtabularx=\XLT@ii@TX@endtabularx
  \let\endtabularx\endxltabular
- \ORIGii@tabularx}
+ \XLT@ii@tabularx}
 {\def\@currenvir{tabularx}}
 
-% In "longtable" increase the counter "table" only if "\caption" is used 
+% in "longtable" increase the counter "table" only if "\caption" is used 
 \AtBeginDocument{%
-  \let\ORIG@LT@capti@n=\LT@capti@n
+  \let\XLT@LT@capti@n=\LT@capti@n
   \def\LT@capti@n{%
-    \@ifstar{\ORIG@LT@capti@n*}{%
-      % We use the following instead of "\refstepcounter"
-      \stepcounter{\LTcaptype}%
-      % We are inside a group: edef -> xdef
-      \protected@xdef\@currentlabel
-        {\csname p@\LTcaptype\endcsname\csname the\LTcaptype\endcsname}%    
-      \ORIG@LT@capti@n
+    \@ifstar{\XLT@LT@capti@n*}{%
+      \XLT@refstepcounter{\LTcaptype}%
+      % because we are inside a group
+      \global\let\@currentlabel=\@currentlabel
+      \ifXLT@HypRef
+        % revert to the patched version
+        \global\let\LT@start=\XLT@Hy@LT@start
+        \hyper@makecurrent{\LTcaptype}%
+        \global\let\Hy@LT@currentHref\@currentHref
+      \fi
+      \XLT@LT@capti@n
     }%
   }%
 } 
 %
 \providecommand*\LTcaptype{table}% support of package "caption"
 \def\longtable{%
-  \addtocounter{\LTcaptype}\m@ne
-  \ORIG@longtable
-}  
+  \ifXLT@HypRef
+    % revert to the unpatched version when \caption is not used
+    \global\let\LT@start=\XLT@LT@start
+  \fi
+  \XLT@longtable
+}
+
+% is not the hyperref version if hyperref is loaded after this package
+\AtEndOfPackage{\let\XLT@refstepcounter=\refstepcounter}
+\newif\ifXLT@HypRef
+\AtBeginDocument{%
+  % is the hyperref version if hyperref is loaded
+  \let\XLT@@refstepcounter=\refstepcounter
+  \@ifpackageloaded{hyperref}{\XLT@HypReftrue}{\XLT@HypReffalse}%
+  \ifXLT@HypRef
+    % save the patched version
+    \let\XLT@Hy@LT@start=\LT@start
+    % revert to the unpatched versions
+    \@ifundefined{scr@LT@array}{%
+      \@ifundefined{adl@LT@array}{%
+        % hyperref has \LT@array patched
+        \let\LT@array=\XLT@LT@array
+      }{%
+        % hyperref has \adl@LT@array patched, not \LT@array
+        \let\adl@LT@array=\XLT@adl@LT@array
+      }%
+    }{%
+      % hyperref has \scr@LT@array patched, not \LT@array
+      \let\scr@LT@array=\XLT@scr@LT@array
+    }%
+  \fi
+  \let\XLT@@LT@array=\LT@array  
+  \def\LT@array{%
+    % make the call of \refstepcounter in \XLT@@LT@array ineffective
+    \def\refstepcounter##1{%
+      \let\refstepcounter=\XLT@@refstepcounter
+    }%
+    \XLT@@LT@array
+  }%
+}
 %
 \endinput
 %%
