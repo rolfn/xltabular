@@ -1,4 +1,4 @@
-# Rolf Niepraschk, 2014-10-24, Rolf.Niepraschk@gmx.de
+# Rolf Niepraschk, 2018-12-16, Rolf.Niepraschk@gmx.de
 
 .SUFFIXES : .tex .ltx .dvi .ps .pdf .eps
 
@@ -13,7 +13,7 @@ VERSION = $(shell awk '/ProvidesPackage/ {print $$2}' $(MAIN).sty)
 BIBS = xltabular-doc.bib
 DIST_DIR = $(MAIN)
 DIST_FILES = $(MAIN).sty README.md $(MAIN)-doc.tex $(MAIN)-doc.pdf Changes \
-  $(BIBS)
+  $(BIBS) xltabular-example-hyp.tex xltabular-example.tex xltabular-example.inp
 ARCHNAME = $(MAIN)-$(VERSION).zip
 
 all : $(MAIN)-doc.pdf
