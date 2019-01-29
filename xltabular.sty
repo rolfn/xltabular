@@ -6,7 +6,7 @@
 % Copyright 2018 Herbert Voss <hvoss@tug.org>
 %                Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2018/12/16 v0.2a `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2019/01/29 v0.2b `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \let\XLT@i@tabularx=\tabularx
 \let\XLT@i@endtabularx=\endtabularx
@@ -47,22 +47,21 @@
  \XLT@ii@tabularx}
 {\def\@currenvir{tabularx}}
 
-% in "longtable" increase the counter "table" only if "\caption" is used 
 \AtBeginDocument{%
-  \let\XLT@LT@capti@n=\LT@capti@n
-  \def\LT@capti@n{%
-    \@ifstar{\XLT@LT@capti@n*}{%
-      \XLT@refstepcounter{\LTcaptype}%
-      % because we are inside a group
-      \global\let\@currentlabel=\@currentlabel
-      \ifXLT@HypRef
-        % revert to the patched version
-        \global\let\LT@start=\XLT@Hy@LT@start
-        \hyper@makecurrent{\LTcaptype}%
-        \global\let\Hy@LT@currentHref\@currentHref
-      \fi
-      \XLT@LT@capti@n
-    }%
+  \def\LT@caption{%
+    \noalign\bgroup\XLT@refstepcounter{\LTcaptype}%
+    % because we are inside a group
+    \global\let\@currentlabel=\@currentlabel
+    \@ifundefined{cref@currentlabel}{}{%
+      \global\let\cref@currentlabel=\cref@currentlabel
+    }
+    \ifXLT@HypRef
+      % revert to the patched version
+      \global\let\LT@start=\XLT@Hy@LT@start
+      \hyper@makecurrent{\LTcaptype}%
+      \global\let\Hy@LT@currentHref\@currentHref
+    \fi      
+    \@ifnextchar[{\egroup\LT@c@ption\@firstofone}\LT@capti@n
   }%
 } 
 %
