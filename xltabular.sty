@@ -102,7 +102,7 @@
   \let\XLT@@LT@array=\LT@array  
   \def\LT@array{%
     % make the call of \refstepcounter in \XLT@@LT@array ineffective
-    \def\refstepcounter##1{%
+    \renewcommand*\refstepcounter[2][]{% 
       \let\refstepcounter=\XLT@@refstepcounter
     }%
     \XLT@@LT@array
