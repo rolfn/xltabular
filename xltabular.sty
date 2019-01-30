@@ -47,23 +47,21 @@
  \XLT@ii@tabularx}
 {\def\@currenvir{tabularx}}
 
-\AtBeginDocument{%
-  \def\LT@caption{%
-    \noalign\bgroup\XLT@refstepcounter{\LTcaptype}%
-    % because we are inside a group
-    \global\let\@currentlabel=\@currentlabel
-    \@ifundefined{cref@currentlabel}{}{%
-      \global\let\cref@currentlabel=\cref@currentlabel
-    }
-    \ifXLT@HypRef
-      % revert to the patched version
-      \global\let\LT@start=\XLT@Hy@LT@start
-      \hyper@makecurrent{\LTcaptype}%
-      \global\let\Hy@LT@currentHref\@currentHref
-    \fi      
-    \@ifnextchar[{\egroup\LT@c@ption\@firstofone}\LT@capti@n
-  }%
-} 
+\def\LT@caption{%
+  \noalign\bgroup\XLT@refstepcounter{\LTcaptype}%
+  % because we are inside a group
+  \global\let\@currentlabel=\@currentlabel
+  \@ifundefined{cref@currentlabel}{}{% from package "cleveref"
+    \global\let\cref@currentlabel=\cref@currentlabel
+  }
+  \ifXLT@HypRef
+    % revert to the patched version
+    \global\let\LT@start=\XLT@Hy@LT@start
+    \hyper@makecurrent{\LTcaptype}%
+    \global\let\Hy@LT@currentHref\@currentHref
+  \fi      
+  \@ifnextchar[{\egroup\LT@c@ption\@firstofone}\LT@capti@n
+}%
 %
 \providecommand*\LTcaptype{table}% support of package "caption"
 \def\longtable{%
@@ -84,7 +82,7 @@
     % revert to the unpatched versions
     \@ifundefined{scr@LT@array}{%
       \@ifundefined{adl@LT@array}{%
-        % hyperref has \LT@array patched
+        % hyperref has \LT@array patched directly
         \let\LT@array=\XLT@LT@array
       }{%
         % hyperref has \adl@LT@array patched, not \LT@array
@@ -95,13 +93,13 @@
       \let\scr@LT@array=\XLT@scr@LT@array
     }%
   \fi
-  \let\XLT@@LT@array=\LT@array  
   \def\LT@array{%
-    % make the 1st call of \refstepcounter (\XLT@@LT@array) ineffective
-    \renewcommand*\refstepcounter[2][]{% 
+    % make the call of \refstepcounter inside of \XLT@LT@array ineffective
+    \renewcommand*\refstepcounter[2][]{%
+      % make next calls effective again
       \let\refstepcounter=\XLT@refstepcounter
     }%
-    \XLT@@LT@array
+    \XLT@LT@array
   }%
 }
 %
