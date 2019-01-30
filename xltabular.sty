@@ -6,7 +6,7 @@
 % Copyright 2018 Herbert Voss <hvoss@tug.org>
 %                Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2019/01/29 v0.2b `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2019/01/30 v0.2b `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \let\XLT@i@tabularx=\tabularx
 \let\XLT@i@endtabularx=\endtabularx
@@ -74,12 +74,9 @@
   \XLT@longtable
 }
 
-% is not the hyperref version if hyperref is loaded after this package
-\AtEndOfPackage{\let\XLT@refstepcounter=\refstepcounter}
 \newif\ifXLT@HypRef
 \AtBeginDocument{%
-  % is the hyperref version if hyperref is loaded
-  \let\XLT@@refstepcounter=\refstepcounter
+  \let\XLT@refstepcounter=\refstepcounter
   \@ifpackageloaded{hyperref}{\XLT@HypReftrue}{\XLT@HypReffalse}%
   \ifXLT@HypRef
     % save the patched version
@@ -100,9 +97,9 @@
   \fi
   \let\XLT@@LT@array=\LT@array  
   \def\LT@array{%
-    % make the call of \refstepcounter in \XLT@@LT@array ineffective
+    % make the 1st call of \refstepcounter (\XLT@@LT@array) ineffective
     \renewcommand*\refstepcounter[2][]{% 
-      \let\refstepcounter=\XLT@@refstepcounter
+      \let\refstepcounter=\XLT@refstepcounter
     }%
     \XLT@@LT@array
   }%
