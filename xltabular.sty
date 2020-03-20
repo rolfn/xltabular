@@ -3,21 +3,18 @@
 %% License from CTAN archives in directory  macros/latex/base/lppl.txt.
 %% Either version 1.3 or, at your option, any later version.
 %%
-% Copyright 2018 Herbert Voss <hvoss@tug.org>
-%                Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
+% Copyright 2018,... Herbert Voss <hvoss@tug.org>
+%                    Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2019/01/30 v0.2b `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2020/03/20 v0.2c `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \let\XLT@i@tabularx=\tabularx
 \let\XLT@i@endtabularx=\endtabularx
 \let\XLT@i@TX@endtabularx=\TX@endtabularx
 %
-\RequirePackage{ltablex}
-\keepXColumns% xltabular behaves like tabularx
-%
-\let\XLT@ii@tabularx=\tabularx
-\let\XLT@ii@TX@endtabularx=\TX@endtabularx
+\RequirePackage{longtable}
 \let\XLT@longtable=\longtable
+\let\XLT@LT@caption=\LT@caption
 \let\XLT@LT@start=\LT@start
 \let\XLT@LT@array=\LT@array
 \@ifundefined{scr@LT@array}{%
@@ -25,7 +22,12 @@
     \@ifundefined{adl@LT@array}{}{\let\XLT@adl@LT@array=\adl@LT@array}
   }
 }{\let\XLT@scr@LT@array=\scr@LT@array}%
-
+%
+\RequirePackage{ltablex}
+\keepXColumns% xltabular behaves like tabularx
+%
+\let\XLT@ii@tabularx=\tabularx
+\let\XLT@ii@TX@endtabularx=\TX@endtabularx
 %
 % restore original tabularx
 \renewenvironment{tabularx}%
@@ -64,11 +66,14 @@
 }%
 %
 \providecommand*\LTcaptype{table}% support of package "caption"
+% restore original longtable
 \def\longtable{%
   \ifXLT@HypRef
     % revert to the unpatched version when \caption is not used
-    \global\let\LT@start=\XLT@LT@start
+    \global\let\LT@start=\XLT@LT@start% 
   \fi
+  \let\LT@array=\XLT@LT@array
+  \let\LT@caption=\XLT@LT@caption
   \XLT@longtable
 }
 
