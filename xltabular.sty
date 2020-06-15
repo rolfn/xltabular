@@ -3,18 +3,21 @@
 %% License from CTAN archives in directory  macros/latex/base/lppl.txt.
 %% Either version 1.3 or, at your option, any later version.
 %%
-% Copyright 2018,... Herbert Voss <hvoss@tug.org>
-%                    Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
+% Copyright 2018-2020 Herbert Voss    <hvoss@tug.org>
+%                     Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2020/03/20 v0.2c `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2020/06/14 v0.2d `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \let\XLT@i@tabularx=\tabularx
 \let\XLT@i@endtabularx=\endtabularx
 \let\XLT@i@TX@endtabularx=\TX@endtabularx
 %
-\RequirePackage{longtable}
+\RequirePackage{ltablex}
+\keepXColumns% xltabular behaves like tabularx
+%
+\let\XLT@ii@tabularx=\tabularx
+\let\XLT@ii@TX@endtabularx=\TX@endtabularx
 \let\XLT@longtable=\longtable
-\let\XLT@LT@caption=\LT@caption
 \let\XLT@LT@start=\LT@start
 \let\XLT@LT@array=\LT@array
 \@ifundefined{scr@LT@array}{%
@@ -22,12 +25,7 @@
     \@ifundefined{adl@LT@array}{}{\let\XLT@adl@LT@array=\adl@LT@array}
   }
 }{\let\XLT@scr@LT@array=\scr@LT@array}%
-%
-\RequirePackage{ltablex}
-\keepXColumns% xltabular behaves like tabularx
-%
-\let\XLT@ii@tabularx=\tabularx
-\let\XLT@ii@TX@endtabularx=\TX@endtabularx
+
 %
 % restore original tabularx
 \renewenvironment{tabularx}%
@@ -50,8 +48,22 @@
 {\def\@currenvir{tabularx}}
 
 \def\LT@caption{%
-  \noalign\bgroup\XLT@refstepcounter{\LTcaptype}%
-  % because we are inside a group
+  \noalign\bgroup
+  \@ifnextchar[{\XLT@LT@caption}{\XLT@@LT@caption}
+}
+\def\XLT@LT@caption[#1]{%
+  % increasing the counter only if opt. parameter is not empty
+  \ifx\relax#1\relax\@tempswafalse\else\@tempswatrue\fi
+  \XLT@@@LT@caption[#1]
+}
+\def\XLT@@LT@caption{% allways increasing the counter
+  \@tempswatrue
+  \XLT@@@LT@caption
+}
+\def\XLT@@@LT@caption{%
+  % Eventually increasing the counter
+  \if@tempswa\refstepcounter{\LTcaptype}\fi
+  % global assignments because we are inside a group
   \global\let\@currentlabel=\@currentlabel
   \@ifundefined{cref@currentlabel}{}{% from package "cleveref"
     \global\let\cref@currentlabel=\cref@currentlabel
@@ -61,19 +73,18 @@
     \global\let\LT@start=\XLT@Hy@LT@start
     \hyper@makecurrent{\LTcaptype}%
     \global\let\Hy@LT@currentHref\@currentHref
-  \fi      
+  \fi
+  % continue with the original definition of \LT@caption 
   \@ifnextchar[{\egroup\LT@c@ption\@firstofone}\LT@capti@n
-}%
+}
+
 %
 \providecommand*\LTcaptype{table}% support of package "caption"
-% restore original longtable
 \def\longtable{%
   \ifXLT@HypRef
-    % revert to the unpatched version when \caption is not used
-    \global\let\LT@start=\XLT@LT@start% 
+    % revert to the unpatched version if \caption is not used
+    \global\let\LT@start=\XLT@LT@start
   \fi
-  \let\LT@array=\XLT@LT@array
-  \let\LT@caption=\XLT@LT@caption
   \XLT@longtable
 }
 
