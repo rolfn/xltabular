@@ -6,7 +6,7 @@
 % Copyright 2018-2020 Herbert Voss    <hvoss@tug.org>
 %                     Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2020/06/14 v0.2d `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2020/11/04 v0.2e `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \let\XLT@i@tabularx=\tabularx
 \let\XLT@i@endtabularx=\endtabularx
@@ -35,16 +35,18 @@
 % define a new tabularx like the one from "ltablex" 
 %
 \newenvironment{xltabular}[1][x]%
-{\if l#1%
+{%
+  \par
+  \if l#1%
     \LTleft\z@ \LTright\fill
- \else\if r#1%
+  \else\if r#1%
     \LTleft\fill \LTright\z@
- \else\if c#1%
+  \else\if c#1%
     \LTleft\fill \LTright\fill
- \fi\fi\fi
- \let\TX@endtabularx=\XLT@ii@TX@endtabularx
- \let\endtabularx\endxltabular
- \XLT@ii@tabularx}
+  \fi\fi\fi
+  \let\TX@endtabularx=\XLT@ii@TX@endtabularx
+  \let\endtabularx\endxltabular
+  \XLT@ii@tabularx}
 {\def\@currenvir{tabularx}}
 
 \def\LT@caption{%
