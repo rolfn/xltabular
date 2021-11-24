@@ -37,7 +37,7 @@
 \usepackage{xltabular}
 \usepackage{fancyvrb}
 \usepackage{blindtext}
-\usepackage{dtk-logos} % for Wikipedia W
+\usepackage{hvlogos} % for Wikipedia W
 \usepackage{ragged2e}
 
 \usepackage[bibstyle=dtk]{biblatex}
@@ -316,11 +316,42 @@ Klassen-Optionen\\
   Klassen-Optionen\\ 
 \end{xltabular}
 
+\subsection{Use of \texttt{xltabular} in an own environment}
 
+\begin{Verbatim}[frame=lines]
+\documentclass{article}
+\usepackage[table]{xcolor}
+\usepackage{xltabular}
+
+\usepackage{blindtext}
+
+\newenvironment{Merksatz}[1][black]%
+  {\xltabular{\linewidth}%
+      { !{\color{#1!30}\vrule width 5mm}
+        X
+        @{}
+       }
+    \cellcolor{#1!15}%
+  }
+  {\endxltabular}
+
+
+\begin{document}
+
+\blindtext\blindtext
+
+\begin{Merksatz}
+Hier kommt ein Merksatz \\
+\blindtext \\ \blindtext\\ \blindtext
+\end{Merksatz}
+
+\blindtext
+
+\end{document}
+\end{Verbatim}
 
 \nocite{*}
 \printbibliography
-
 
 \end{document}
 
