@@ -3,11 +3,12 @@
 %% License from CTAN archives in directory  macros/latex/base/lppl.txt.
 %% Either version 1.3 or, at your option, any later version.
 %%
-% Copyright 2018-2020 Herbert Voss    <hvoss@tug.org>
+% Copyright 2018-2024 Herbert Voss    <hvoss@tug.org>
 %                     Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2020/11/04 v0.2e `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2024/10/28 v0.2g `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
+\RequirePackage{etoolbox}
 \let\XLT@i@tabularx=\tabularx
 \let\XLT@i@endtabularx=\endtabularx
 \let\XLT@i@TX@endtabularx=\TX@endtabularx
@@ -15,9 +16,16 @@
 \RequirePackage{ltablex}
 \keepXColumns% xltabular behaves like tabularx
 %
+\newif\ifXLT@normalPB \XLT@normalPBtrue
+\newcommand*\normalLTpagebreak{\global\XLT@normalPBtrue}
+\newcommand*\specialLTpagebreak{\global\XLT@normalPBfalse}
+%
 \let\XLT@ii@tabularx=\tabularx
 \let\XLT@ii@TX@endtabularx=\TX@endtabularx
 \let\XLT@longtable=\longtable
+% prevents problematic behavior of longtable at page breaks (\XLT@normalPBfalse)
+\patchcmd{\LT@start}{\vfil \break}{\ifXLT@normalPB \vfil \break \fi}{}{}
+\patchcmd{\LT@start}{\penalty \z@}{\ifXLT@normalPB \penalty \z@ \fi}{}{}
 \let\XLT@LT@start=\LT@start
 \let\XLT@LT@array=\LT@array
 \@ifundefined{scr@LT@array}{%
@@ -32,7 +40,7 @@
 {\let\TX@endtabularx=\XLT@i@TX@endtabularx\XLT@i@tabularx}
 {\XLT@i@endtabularx}
 %
-% define a new tabularx like the one from "ltablex" 
+% define a new tabularx like the one from "ltablex"
 %
 \newenvironment{xltabular}[1][x]%
 {%
@@ -76,7 +84,7 @@
     \hyper@makecurrent{\LTcaptype}%
     \global\let\Hy@LT@currentHref\@currentHref
   \fi
-  % continue with the original definition of \LT@caption 
+  % continue with the original definition of \LT@caption
   \@ifnextchar[{\egroup\LT@c@ption\@firstofone}\LT@capti@n
 }
 
@@ -113,10 +121,10 @@
   \fi
   \def\LT@array{%
     % make the call of \refstepcounter inside of \XLT@LT@array ineffective
-    \renewcommand*\refstepcounter[2][]{%
+%    \renewcommand*\refstepcounter[2][]{%
       % make next calls effective again
-      \let\refstepcounter=\XLT@refstepcounter
-    }%
+%      \let\refstepcounter=\XLT@refstepcounter
+%    }%
     \XLT@LT@array
   }%
 }

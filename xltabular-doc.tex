@@ -1,4 +1,4 @@
-%% $Id: xltabular-doc.tex 598 2017-09-30 19:52:25Z herbert $
+%% $Id: xltabular-doc.tex 635 2017-10-24 18:22:59Z herbert $
 %
 \listfiles\setcounter{errorcontextlines}{100}
 \documentclass[paper=a4,fontsize=11pt,DIV=13,parskip=half-,
@@ -35,9 +35,12 @@
 %\nolig{oe}{o|e}
 
 \usepackage{xltabular}
+
+%\specialLTpagebreak
+
 \usepackage{fancyvrb}
 \usepackage{blindtext}
-\usepackage{hvlogos} % for Wikipedia W
+\usepackage{dtk-logos} % for Wikipedia W
 \usepackage{ragged2e}
 
 \usepackage[bibstyle=dtk]{biblatex}
@@ -60,8 +63,7 @@
 
 \GetFileInfo{xltabular.sty}
 
-\title{Package \texttt{xltabular}%
-\thanks{\url{https://github.com/rolfn/xltabular}}\\--\\ \normalsize \fileversion\ (\filedate)}
+\title{Package \texttt{xltabular} \\--\\ \normalsize \fileversion\ (\filedate)}
 \author{Rolf Niepraschk\thanks{Rolf.Niepraschk@gmx.de} \and Herbert Voß\thanks{hvoss@tug.org}}
 \begin{document}
 \maketitle
@@ -317,42 +319,123 @@ Klassen-Optionen\\
   Klassen-Optionen\\ 
 \end{xltabular}
 
-\subsection{Use of \texttt{xltabular} in an own environment}
 
-\begin{Verbatim}[frame=lines]
-\documentclass{article}
-\usepackage[table]{xcolor}
-\usepackage{xltabular}
+\section{Pagebreaks}
 
-\usepackage{blindtext}
+\texttt{xltabular} is based on \texttt{longtable} which itself has sometimes a problem with the pagebreak.
+It may be possible, that you'll get a break between a section header and the following \texttt{longtable}/\texttt{xltabular}.
+Here is an example with \texttt{xltabular}:
 
-\newenvironment{Merksatz}[1][black]%
-  {\xltabular{\linewidth}%
-      { !{\color{#1!30}\vrule width 5mm}
-        X
-        @{}
-       }
-    \cellcolor{#1!15}%
-  }
-  {\endxltabular}
+\section{Title above the tabular}
+
+\begin{xltabular}{\linewidth}{@{} >{\ttfamily}l >{\RaggedRight}X @{}}
+\caption{File endings (only for a demonstration \ldots)}\\
+\hline
+.ext & Beschreibung\\\hline
+\endfirsthead
+\multicolumn{2}{@{}l}{\ldots\ \small Fortsetzung}\\\hline
+.ext & Beschreibung\\\hline
+\endhead
+\hline
+\multicolumn{2}{r@{}}{\small Fortsetzung\ldots}\\
+\endfoot
+\hline
+\endlastfoot
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+% aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+% bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+% bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+\end{xltabular}
 
 
-\begin{document}
+Package \texttt{xltabular} defines two macros which can be used to modify the behaviour of
+\texttt{longtable}/ \texttt{xltabular} for pagebreaks.
 
-\blindtext\blindtext
+\begin{verbatim}
+\newcommand*\normalLTpagebreak{...}
+\newcommand*\specialLTpagebreak{...}
+\end{verbatim}
 
-\begin{Merksatz}
-Hier kommt ein Merksatz \\
-\blindtext \\ \blindtext\\ \blindtext
-\end{Merksatz}
+With \verb|\specialLTpagebreak| one can get another beaviour which prevents such unwanted pagebreak.
+With \verb|\normalLTpagebreak| you can set it  back to the default behaviour. Here comes an example
+with the special behaviour by using \verb|\specialLTpagebreak|: \specialLTpagebreak
 
-\blindtext
 
-\end{document}
-\end{Verbatim}
+
+\section{Title above the tabular}
+
+\begin{xltabular}{\linewidth}{@{} >{\ttfamily}l >{\RaggedRight}X @{}}
+\caption{File endings (only for a demonstration \ldots)}\\
+\hline
+.ext & Beschreibung\\\hline
+\endfirsthead
+\multicolumn{2}{@{}l}{\ldots\ \small Fortsetzung}\\\hline
+.ext & Beschreibung\\\hline
+\endhead
+\hline
+\multicolumn{2}{r@{}}{\small Fortsetzung\ldots}\\
+\endfoot
+\hline
+\endlastfoot
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+ aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+ bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+ bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+% cfg &  (config) Konfigurationsdatei\\ 
+% clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+%  Klassen-Optionen\\ 
+% aux &  (auxiliary) Hilfsdatei, enthält Querverweise usw. \\ 
+% bbl &  (bibliography) Hilfsdatei, enthält die Einträge für die Literatur\\ 
+% bib &  (bibtex) enthält die Literaturdaten\\ 
+ blg &  (bibliography log) enthält die Ausgaben eines Bib\TeX-Laufs\\ 
+ cfg &  (config) Konfigurationsdatei\\ 
+ clo &  (class options) Definitionen für die Dokumentenklasse und die entsprechenden
+  Klassen-Optionen\\ 
+\end{xltabular}
+
+
+
+\pagebreak
 
 \nocite{*}
 \printbibliography
 
-\end{document}
 
+\end{document}
