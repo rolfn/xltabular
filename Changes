@@ -1,3 +1,4 @@
+0.2g  2024/10/28  - prevent problematic behavior of longtable at page breaks
 2.0e  2020/11/04  - insert a \par at the beginning of xltabular
 2.0c  2020/03/20  - restore of original longtable more robust
 2.0a  2018/12/16  - better hyperref support; example files
