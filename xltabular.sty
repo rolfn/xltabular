@@ -6,7 +6,7 @@
 % Copyright 2018-2024 Herbert Voss    <hvoss@tug.org>
 %                     Rolf Niepraschk <Rolf.Niepraschk@gmx.de>
 %%
-\ProvidesPackage{xltabular}[2024/10/28 v2.0g `xltabular' package (hv,RN)]
+\ProvidesPackage{xltabular}[2024/11/13 v0.2h `xltabular' package (hv,RN)]
 \RequirePackage{tabularx}
 \RequirePackage{etoolbox}
 \let\XLT@i@tabularx=\tabularx
@@ -57,78 +57,15 @@
   \XLT@ii@tabularx}
 {\def\@currenvir{tabularx}}
 
-\def\LT@caption{%
-  \noalign\bgroup
-  \@ifnextchar[{\XLT@LT@caption}{\XLT@@LT@caption}
-}
-\def\XLT@LT@caption[#1]{%
-  % increasing the counter only if opt. parameter is not empty
-  \ifx\relax#1\relax\@tempswafalse\else\@tempswatrue\fi
-  \XLT@@@LT@caption[#1]
-}
-\def\XLT@@LT@caption{% allways increasing the counter
-  \@tempswatrue
-  \XLT@@@LT@caption
-}
-\def\XLT@@@LT@caption{%
-  % Eventually increasing the counter
-  \if@tempswa\refstepcounter{\LTcaptype}\fi
-  % global assignments because we are inside a group
-  \global\let\@currentlabel=\@currentlabel
-  \@ifundefined{cref@currentlabel}{}{% from package "cleveref"
-    \global\let\cref@currentlabel=\cref@currentlabel
-  }
-  \ifXLT@HypRef
-    % revert to the patched version
-    \global\let\LT@start=\XLT@Hy@LT@start
-    \hyper@makecurrent{\LTcaptype}%
-    \global\let\Hy@LT@currentHref\@currentHref
-  \fi
-  % continue with the original definition of \LT@caption
-  \@ifnextchar[{\egroup\LT@c@ption\@firstofone}\LT@capti@n
-}
-
-%
 \providecommand*\LTcaptype{table}% support of package "caption"
-\def\longtable{%
-  \ifXLT@HypRef
-    % revert to the unpatched version if \caption is not used
-    \global\let\LT@start=\XLT@LT@start
-  \fi
-  \XLT@longtable
-}
+%\def\longtable{%
+%  \ifXLT@HypRef
+%    % revert to the unpatched version if \caption is not used
+%    \global\let\LT@start=\XLT@LT@start
+%  \fi
+%  \XLT@longtable
+%}
 
-\newif\ifXLT@HypRef
-\AtBeginDocument{%
-  \let\XLT@refstepcounter=\refstepcounter
-  \@ifpackageloaded{hyperref}{\XLT@HypReftrue}{\XLT@HypReffalse}%
-  \ifXLT@HypRef
-    % save the patched version
-    \let\XLT@Hy@LT@start=\LT@start
-    % revert to the unpatched versions
-    \@ifundefined{scr@LT@array}{%
-      \@ifundefined{adl@LT@array}{%
-        % hyperref has \LT@array patched directly
-        \let\LT@array=\XLT@LT@array
-      }{%
-        % hyperref has \adl@LT@array patched, not \LT@array
-        \let\adl@LT@array=\XLT@adl@LT@array
-      }%
-    }{%
-      % hyperref has \scr@LT@array patched, not \LT@array
-      \let\scr@LT@array=\XLT@scr@LT@array
-    }%
-  \fi
-  \def\LT@array{%
-    % make the call of \refstepcounter inside of \XLT@LT@array ineffective
-%    \renewcommand*\refstepcounter[2][]{%
-      % make next calls effective again
-%      \let\refstepcounter=\XLT@refstepcounter
-%    }%
-    \XLT@LT@array
-  }%
-}
-%
 \endinput
 %%
 %% End of file `xltabular.sty'.

@@ -1,6 +1,6 @@
 
 \newcommand*\showCounterTable{%
-  \noindent The Counter \textbf{table:~\arabic{table}}%
+  \noindent The Counter \textbf{table:~\arabic{table}}\par
 }
 
 \begin{document}
@@ -41,6 +41,28 @@
 \end{xltabular}
 \showCounterTable
 
+\section{Section 4 of Chapter 1}
+
+\showCounterTable
+\begin{xltabular}[r]{.7\linewidth}{|c|X|X|}
+\caption*{A table with a star caption\label{tab:BB}} \\
+\hline
+1 & \hrulefill 2 \hrulefill & \hrulefill 3 \hrulefill \\
+4 & \hrulefill 5 \hrulefill & \hrulefill 6 \hrulefill \\
+\hline
+\end{xltabular}
+\showCounterTable
+
+\showCounterTable
+\begin{xltabular}[r]{.7\linewidth}{|c|X|X|}
+\caption{A table with a normal caption\label{tab:BBB}} \\
+\hline
+1 & \hrulefill 2 \hrulefill & \hrulefill 3 \hrulefill \\
+4 & \hrulefill 5 \hrulefill & \hrulefill 6 \hrulefill \\
+\hline
+\end{xltabular}
+\showCounterTable
+
 \chapter{Chapter 2}
 \section{Section 1 of Chapter 2}
 
@@ -66,7 +88,22 @@
 \end{xltabular}
 \showCounterTable
 
-\section{Section 3 of Chapter 2 -- some references}
+
+\section{Section 3 of Chapter 2}
+
+\showCounterTable
+\begin{xltabular}[c]{.7\linewidth}{|c|X|X|}
+\caption{A table with a caption\label{tab:DD}} \\
+\hline
+ & \begin{enumerate}\item foo \item bar \end{enumerate} & \\
+1 & \hrulefill 2 \hrulefill & \hrulefill 3 \hrulefill \\
+4 & \hrulefill 5 \hrulefill & \hrulefill 6 \hrulefill \\
+\hline
+\end{xltabular}
+\showCounterTable
+
+
+\section{Section 4 of Chapter 2 -- some references}
 
 \begin{itemize}
   \item Table~\ref{tab:A} is on page~\pageref{tab:A}
@@ -74,6 +111,16 @@
   \item Table~\ref{tab:C} is on page~\pageref{tab:C}
   \item Table~\ref{tab:D} is on page~\pageref{tab:D}
 \end{itemize}
+
+
+\begin{longtable}{c}
+\caption{caption}
+\endfirsthead
+xxx\\xxx
+xxx\\xxx
+\end{longtable}
+
+\listoftables
 
 \end{document}
 
