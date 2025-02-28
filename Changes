@@ -1,3 +1,4 @@
+2.0i  2025/02/28  - added tagging (HV)
 2.0h  2024/11/13  - Simplifying the code, taking into account the current longtable version
 2.0g  2024/10/28  - prevent problematic behavior of longtable at page breaks
 2.0e  2020/11/04  - insert a \par at the beginning of xltabular

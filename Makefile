@@ -13,7 +13,8 @@ VERSION = $(shell awk '/ProvidesPackage/ {print $$2}' $(MAIN).sty)
 BIBS = xltabular-doc.bib
 DIST_DIR = $(MAIN)
 DIST_FILES = $(MAIN).sty README.md $(MAIN)-doc.tex $(MAIN)-doc.pdf Changes \
-  $(BIBS) xltabular-example-hyp.tex xltabular-example.tex xltabular-example.inp
+  $(BIBS) xltabular-example.tex xltabular-example.inp
+#  $(BIBS) xltabular-example-hyp.tex xltabular-example.tex xltabular-example.inp
 ARCHNAME = $(MAIN)-$(VERSION).zip
 
 all : $(MAIN)-doc.pdf
