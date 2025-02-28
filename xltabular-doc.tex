@@ -1,6 +1,14 @@
 %% $Id: xltabular-doc.tex 635 2017-10-24 18:22:59Z herbert $
 %
 \listfiles\setcounter{errorcontextlines}{100}
+
+\DocumentMetadata
+  {
+    lang=en-US,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    testphase={latest}
+  }
 \documentclass[paper=a4,fontsize=11pt,DIV=13,parskip=half-,
                captions=tableabove,twoside=on]{scrartcl}
 \usepackage{fontspec}
@@ -35,7 +43,11 @@
 %\nolig{oe}{o|e}
 
 \usepackage{xltabular}
-
+\makeatletter
+%\def\LT@caption{%
+%	\noalign\bgroup
+%	\@ifnextchar[{\egroup\LT@c@ption\@firstofone}\LT@capti@n}
+\makeatother
 %\specialLTpagebreak
 
 \usepackage{fancyvrb}
@@ -44,7 +56,8 @@
 \usepackage{ragged2e}
 
 \usepackage[bibstyle=dtk]{biblatex}
-\addbibresource{\jobname.bib}
+%\addbibresource{\jobname.bib}
+\addbibresource[location=remote]{https://mirror.ctan.org/biblio/ctan-bibdata/ctan.bib}
 
 \raggedbottom
 \usepackage[colorlinks,linktocpage]{hyperref}
@@ -434,7 +447,7 @@ with the special behaviour by using \verb|\specialLTpagebreak|: \specialLTpagebr
 
 \pagebreak
 
-\nocite{*}
+\nocite{ctan-ltablex,ctan-tabularx,ctan-longtable}
 \printbibliography
 
 
